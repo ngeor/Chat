@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
-Begin VB.Form Form1
+Begin VB.Form Form1 
    Caption         =   "Chat Client"
    ClientHeight    =   3195
    ClientLeft      =   60
@@ -11,7 +11,7 @@ Begin VB.Form Form1
    ScaleHeight     =   3195
    ScaleWidth      =   7755
    StartUpPosition =   3  'Windows Default
-   Begin MSWinsockLib.Winsock Winsock1
+   Begin MSWinsockLib.Winsock Winsock1 
       Left            =   5040
       Top             =   360
       _ExtentX        =   741
@@ -19,8 +19,8 @@ Begin VB.Form Form1
       _Version        =   393216
       RemotePort      =   7000
    End
-   Begin VB.ListBox lstUsers
-      BeginProperty Font
+   Begin VB.ListBox lstUsers 
+      BeginProperty Font 
          Name            =   "Fixedsys"
          Size            =   9
          Charset         =   161
@@ -36,8 +36,8 @@ Begin VB.Form Form1
       Top             =   0
       Width           =   1215
    End
-   Begin VB.TextBox txtIn
-      BeginProperty Font
+   Begin VB.TextBox txtIn 
+      BeginProperty Font 
          Name            =   "Fixedsys"
          Size            =   9
          Charset         =   161
@@ -53,7 +53,7 @@ Begin VB.Form Form1
       Top             =   1920
       Width           =   1215
    End
-   Begin RichTextLib.RichTextBox richOut
+   Begin RichTextLib.RichTextBox richOut 
       Height          =   1935
       Left            =   0
       TabIndex        =   0
@@ -66,7 +66,7 @@ Begin VB.Form Form1
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"ChatForm.frx":0000
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851}
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Fixedsys"
          Size            =   9
          Charset         =   161
@@ -185,7 +185,7 @@ End Sub
 
 Private Sub Winsock1_Connect()
     mLogger.Info "Connected"
-    ChangeNickname
+    SetInitialNickname
 End Sub
 
 Private Sub Winsock1_DataArrival(ByVal bytesTotal As Long)
@@ -206,8 +206,13 @@ Trap:
     mLogger.Error Err.Number & " - " & Err.Description
 End Sub
 
-Private Sub ChangeNickname()
-    SendMessage "/nick " & Trim(InputBox("Enter User Name: "))
+Private Sub SetInitialNickname()
+    Dim InitialNickname As String
+    InitialNickname = ""
+    While InitialNickname = ""
+        InitialNickname = Trim(InputBox("Enter your nickname:"))
+    Wend
+    SendMessage "/nick " & InitialNickname
 End Sub
 
 Private Property Get Nickname() As String
